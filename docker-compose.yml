@@ -1,0 +1,49 @@
+services:
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    networks:
+      - eco-network
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - cv-backend
+
+  cv-backend:
+    build:
+      context: ./cv-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - eco-network
+    volumes:
+      - ./cv-backend:/app
+    environment:
+      - LLM_URL=http://llm-backend:11434/api/generate
+    depends_on:
+      - llm-backend
+
+  llm-backend:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    networks:
+      - eco-network
+    dns:
+      - 8.8.8.8
+      - 1.1.1.1
+    volumes:
+      - ollama_data:/root/.ollama
+      - ./llm-backend/entrypoint.sh:/entrypoint.sh
+    entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
+
+networks:
+  eco-network:
+    driver: bridge
+
+volumes:
+  ollama_data:
