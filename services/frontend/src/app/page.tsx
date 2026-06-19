@@ -135,9 +135,7 @@ export default function EcoSorterDashboard() {
           setConfidence(data.confidence);
           setDetections(data.detections || []);
           drawBoundingBoxes(data.detections || []);
-          if (data.llm_result) {
-            setLlmResult(data.llm_result);
-          }
+          setLlmResult(data.llm_result || null);
         } catch (err) {
           console.error("Error parsing WS message:", err);
         }
@@ -212,7 +210,7 @@ export default function EcoSorterDashboard() {
   };
 
   return (
-    <div className="min-h-screen text-slate-100 p-4 md:p-8 font-sans selection:bg-emerald-500/30">
+    <div className="min-h-screen text-slate-800 p-4 md:p-8 font-sans selection:bg-emerald-500/30">
       <Head>
         <title>Eco-Sorter | AI Waste Classification</title>
         <meta name="description" content="AI-powered waste sorting dashboard" />
@@ -229,36 +227,36 @@ export default function EcoSorterDashboard() {
             <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-cyan-400 tracking-tight">
               Eco-Sorter
             </h1>
-            <p className="text-slate-400 text-sm">Intelligent Waste Classification</p>
+            <p className="text-slate-500 text-sm">Intelligent Waste Classification</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-800/50 border border-slate-700/50 backdrop-blur-md">
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/60 border border-slate-200/50 backdrop-blur-md shadow-sm">
           <div className={`w-2.5 h-2.5 rounded-full ${status === 'Connected' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse' : status === 'Connecting' ? 'bg-amber-500' : 'bg-red-500'}`}></div>
-          <span className="text-xs font-medium text-slate-300">{status}</span>
+          <span className="text-xs font-medium text-slate-600">{status}</span>
         </div>
       </header>
 
       <main className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Camera Feed */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="glass-panel rounded-2xl overflow-hidden relative group transition-all duration-300 hover:shadow-emerald-500/10">
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent z-10 pointer-events-none"></div>
+          <div className="glass-panel rounded-2xl overflow-hidden relative group transition-all duration-300 hover:shadow-emerald-500/20">
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/40 via-transparent to-transparent z-10 pointer-events-none"></div>
             
             {/* Top Bar Overlay */}
             <div className="absolute top-4 left-4 right-4 z-20 flex justify-between items-start pointer-events-none">
-              <div className="bg-slate-900/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 flex items-center gap-2">
-                <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="bg-white/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-200/50 shadow-sm flex items-center gap-2">
+                <svg className="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                 </svg>
-                <span className="text-sm font-medium text-slate-200">Live Feed</span>
+                <span className="text-sm font-medium text-slate-700">Live Feed</span>
               </div>
 
               {detectedItem && (
-                <div className="bg-slate-900/80 backdrop-blur-md px-4 py-2 rounded-xl border border-emerald-500/30 flex flex-col items-end animate-in fade-in duration-300">
-                  <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">Detecting</span>
+                <div className="bg-white/90 backdrop-blur-md px-4 py-2 rounded-xl border border-emerald-500/30 shadow-md flex flex-col items-end animate-in fade-in duration-300">
+                  <span className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-1">Detecting</span>
                   <div className="flex items-center gap-2">
-                    <span className="text-emerald-400 font-mono font-bold">{Math.round(confidence * 100)}%</span>
-                    <span className="text-lg font-bold text-white capitalize">{detectedItem}</span>
+                    <span className="text-emerald-500 font-mono font-bold">{Math.round(confidence * 100)}%</span>
+                    <span className="text-lg font-bold text-slate-800 capitalize">{detectedItem}</span>
                   </div>
                 </div>
               )}
@@ -269,7 +267,7 @@ export default function EcoSorterDashboard() {
               autoPlay 
               playsInline 
               muted 
-              className="w-full h-[50vh] md:h-[65vh] object-cover bg-slate-900 transform transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+              className="w-full h-[50vh] md:h-[65vh] object-cover bg-slate-100 transform transition-transform duration-700 ease-out group-hover:scale-[1.02]"
             />
             {/* Bounding box overlay canvas */}
             <canvas 
@@ -295,8 +293,8 @@ export default function EcoSorterDashboard() {
             {/* Background Decoration */}
             <div className="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
             
-            <h2 className="text-xl font-semibold mb-6 flex items-center gap-2 border-b border-white/5 pb-4">
-              <svg className="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <h2 className="text-xl font-semibold mb-6 flex items-center gap-2 border-b border-slate-200/60 pb-4 text-slate-800">
+              <svg className="w-5 h-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
               </svg>
               Analysis Results
@@ -306,24 +304,24 @@ export default function EcoSorterDashboard() {
               <div className="flex-1 flex flex-col items-center justify-center text-slate-500 min-h-[300px]">
                 <div className="relative mb-6 animate-float">
                   <div className="absolute inset-0 bg-emerald-500/20 rounded-full blur-xl"></div>
-                  <svg className="w-16 h-16 text-slate-600 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="w-16 h-16 text-slate-400 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                   </svg>
                 </div>
                 {detectedItem ? (
                   <div className="text-center space-y-2">
-                    <div className="flex items-center gap-2 justify-center text-emerald-400">
+                    <div className="flex items-center gap-2 justify-center text-emerald-600">
                       <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
                       <p className="font-medium">Analyzing {detectedItem}...</p>
                     </div>
-                    <p className="text-sm opacity-70">Consulting AI model for sorting guidelines</p>
+                    <p className="text-sm text-slate-500">Consulting AI model for sorting guidelines</p>
                   </div>
                 ) : (
                   <div className="text-center">
-                    <p className="font-medium text-slate-400">Waiting for object</p>
+                    <p className="font-medium text-slate-600">Waiting for object</p>
                     <p className="text-sm text-slate-500 mt-1">Place an item in front of the camera</p>
                   </div>
                 )}
@@ -331,34 +329,34 @@ export default function EcoSorterDashboard() {
             ) : (
               <div className="space-y-6 flex-1 animate-in fade-in duration-500">
                 {/* Main Category Card */}
-                <div className={`p-5 rounded-xl border-l-4 ${getCategoryColor(llmResult.category)} ${getCategoryBg(llmResult.category)} backdrop-blur-sm border-t border-r border-b border-white/5`}>
+                <div className={`p-5 rounded-xl border-l-4 ${getCategoryColor(llmResult.category)} ${getCategoryBg(llmResult.category)} backdrop-blur-sm border-t border-r border-b border-slate-200/50 shadow-sm`}>
                   <p className="text-sm font-semibold uppercase tracking-wider mb-1 opacity-80">Category</p>
                   <p className="text-2xl font-bold tracking-tight">{llmResult.category}</p>
                 </div>
 
                 {/* Detected Item */}
-                <div className="bg-slate-800/40 rounded-xl p-4 border border-white/5">
-                  <p className="text-xs text-slate-400 uppercase font-semibold mb-1">Identified Item</p>
-                  <p className="text-lg font-medium text-slate-200 capitalize">{llmResult.item}</p>
+                <div className="bg-white/60 rounded-xl p-4 border border-slate-200/50 shadow-sm">
+                  <p className="text-xs text-slate-500 uppercase font-semibold mb-1">Identified Item</p>
+                  <p className="text-lg font-medium text-slate-800 capitalize">{llmResult.item}</p>
                 </div>
 
                 {/* Action Required */}
-                <div className="bg-slate-800/40 rounded-xl p-4 border border-white/5 relative overflow-hidden group">
+                <div className="bg-white/60 rounded-xl p-4 border border-slate-200/50 shadow-sm relative overflow-hidden group">
                   <div className="absolute top-0 left-0 w-1 h-full bg-blue-500/50 group-hover:bg-blue-400 transition-colors"></div>
-                  <p className="text-xs text-slate-400 uppercase font-semibold mb-2">Action Required</p>
-                  <p className="text-slate-300 leading-relaxed text-sm">{llmResult.action_required}</p>
+                  <p className="text-xs text-slate-500 uppercase font-semibold mb-2">Action Required</p>
+                  <p className="text-slate-700 leading-relaxed text-sm">{llmResult.action_required}</p>
                 </div>
 
                 {/* Fun Fact */}
-                <div className="bg-slate-800/40 rounded-xl p-4 border border-white/5 relative overflow-hidden group">
+                <div className="bg-white/60 rounded-xl p-4 border border-slate-200/50 shadow-sm relative overflow-hidden group">
                   <div className="absolute top-0 left-0 w-1 h-full bg-purple-500/50 group-hover:bg-purple-400 transition-colors"></div>
-                  <p className="text-xs text-slate-400 uppercase font-semibold mb-2 flex items-center gap-1.5">
-                    <svg className="w-3.5 h-3.5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <p className="text-xs text-slate-500 uppercase font-semibold mb-2 flex items-center gap-1.5">
+                    <svg className="w-3.5 h-3.5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     Did You Know?
                   </p>
-                  <p className="text-slate-300 leading-relaxed text-sm italic">{llmResult.fun_fact}</p>
+                  <p className="text-slate-700 leading-relaxed text-sm italic">{llmResult.fun_fact}</p>
                 </div>
               </div>
             )}
