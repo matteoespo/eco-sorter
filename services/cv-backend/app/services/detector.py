@@ -6,6 +6,7 @@ vocabulary and per-class confidence thresholds.
 from __future__ import annotations
 
 import logging
+import shutil
 import threading
 from pathlib import Path
 
@@ -32,6 +33,9 @@ class DetectorService:
 
         Attempts to load weights from the local weights directory first;
         falls back to Ultralytics auto-download if the file is not found.
+        After auto-download, copies the weights file into the weights
+        directory so it persists across container restarts via the
+        Docker volume.
 
         Args:
             settings: Application settings instance.
@@ -39,19 +43,37 @@ class DetectorService:
         self._settings = settings
         self._lock = threading.Lock()
 
-        local_weights = Path(settings.YOLO_WEIGHTS_DIR) / settings.YOLO_MODEL_NAME
+        weights_dir = Path(settings.YOLO_WEIGHTS_DIR)
+        weights_dir.mkdir(parents=True, exist_ok=True)
+        local_weights = weights_dir / settings.YOLO_MODEL_NAME
+
         if local_weights.exists():
+            # Use the cached weights file from the Docker volume
             model_path = str(local_weights)
-            logger.info("Loading YOLO weights from local path: %s", model_path)
+            logger.info("Loading YOLO weights from cached path: %s", model_path)
         else:
+            # Let ultralytics auto-download the model
             model_path = settings.YOLO_MODEL_NAME
             logger.info(
-                "Local weights not found at %s — falling back to auto-download: %s",
+                "Cached weights not found at %s — downloading: %s",
                 local_weights,
                 model_path,
             )
 
         self._model = YOLOWorld(model_path)
+
+        # If we auto-downloaded, copy the weights file into the volume
+        # so subsequent restarts skip the download.
+        if not local_weights.exists():
+            # After loading, the model's ckpt_path points to the downloaded file
+            downloaded = Path(self._model.ckpt_path)
+            if downloaded.exists():
+                shutil.copy2(str(downloaded), str(local_weights))
+                logger.info(
+                    "Cached downloaded weights to %s for future restarts",
+                    local_weights,
+                )
+
         self._model.set_classes(ECO_CLASSES)
         logger.info("YOLO-World model loaded with %d eco-classes", len(ECO_CLASSES))
 
@@ -81,7 +103,8 @@ class DetectorService:
             for box in boxes:
                 cls_id = int(box.cls[0])
                 confidence = float(box.conf[0])
-                label = ECO_CLASSES[cls_id]
+                # Use the model's names dict — it reflects set_classes() ordering
+                label = self._model.names.get(cls_id, f"class_{cls_id}")
 
                 # Apply per-class threshold (fall back to default)
                 threshold = CLASS_THRESHOLDS.get(
@@ -128,3 +151,4 @@ def get_detector() -> DetectorService:
     if _detector is None:
         _detector = DetectorService(get_settings())
     return _detector
+

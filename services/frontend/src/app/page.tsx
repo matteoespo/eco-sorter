@@ -13,7 +13,8 @@ type LLMResult = {
 type Detection = {
   label: string;
   confidence: number;
-  bbox: [number, number, number, number]; // normalized x1, y1, x2, y2
+  bbox: { x1: number; y1: number; x2: number; y2: number }; // normalized 0-1
+  eco_category: string;
 };
 
 type FrameResponse = {
@@ -61,7 +62,7 @@ export default function EcoSorterDashboard() {
     ];
 
     dets.forEach((det, i) => {
-      const [nx1, ny1, nx2, ny2] = det.bbox;
+      const { x1: nx1, y1: ny1, x2: nx2, y2: ny2 } = det.bbox;
       const x1 = nx1 * canvas.width;
       const y1 = ny1 * canvas.height;
       const x2 = nx2 * canvas.width;
@@ -189,7 +190,7 @@ export default function EcoSorterDashboard() {
   const getCategoryColor = (category: string) => {
     if (!category) return "border-gray-500 text-gray-400";
     const lower = category.toLowerCase();
-    if (lower.includes("recycling") || lower.includes("recycle")) return "border-emerald-500 text-emerald-400";
+    if (lower.includes("recycl")) return "border-emerald-500 text-emerald-400";
     if (lower.includes("trash") || lower.includes("landfill")) return "border-red-500 text-red-400";
     if (lower.includes("compost") || lower.includes("organic")) return "border-amber-500 text-amber-400";
     if (lower.includes("hazardous")) return "border-purple-500 text-purple-400";
@@ -199,7 +200,7 @@ export default function EcoSorterDashboard() {
   const getCategoryBg = (category: string) => {
     if (!category) return "bg-gray-500/10";
     const lower = category.toLowerCase();
-    if (lower.includes("recycling") || lower.includes("recycle")) return "bg-emerald-500/10";
+    if (lower.includes("recycl")) return "bg-emerald-500/10";
     if (lower.includes("trash") || lower.includes("landfill")) return "bg-red-500/10";
     if (lower.includes("compost") || lower.includes("organic")) return "bg-amber-500/10";
     if (lower.includes("hazardous")) return "bg-purple-500/10";
