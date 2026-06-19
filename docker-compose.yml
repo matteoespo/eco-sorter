@@ -1,7 +1,7 @@
 services:
   frontend:
-    build: 
-      context: ./frontend
+    build:
+      context: ./services/frontend
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
@@ -14,16 +14,20 @@ services:
 
   cv-backend:
     build:
-      context: ./cv-backend
+      context: ./services/cv-backend
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
     networks:
       - eco-network
     volumes:
-      - ./cv-backend:/app
+      - cv_weights:/app/weights
     environment:
       - LLM_URL=http://llm-backend:11434/api/generate
+      - LLM_MODEL=gemma:2b
+      - DEFAULT_CONFIDENCE=0.20
+      - DEBOUNCE_SECONDS=1.5
+      - LOG_LEVEL=INFO
     depends_on:
       - llm-backend
 
@@ -38,7 +42,7 @@ services:
       - 1.1.1.1
     volumes:
       - ollama_data:/root/.ollama
-      - ./llm-backend/entrypoint.sh:/entrypoint.sh
+      - ./services/llm-backend/entrypoint.sh:/entrypoint.sh
     entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
 
 networks:
@@ -47,3 +51,4 @@ networks:
 
 volumes:
   ollama_data:
+  cv_weights:

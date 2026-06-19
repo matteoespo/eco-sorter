@@ -3,6 +3,8 @@ uvicorn[standard]
 ultralytics
 opencv-python-headless
 python-multipart
-requests
 pydantic
+pydantic-settings
 websockets
+httpx
+numpy
