@@ -33,18 +33,28 @@ services:
 
   llm-backend:
     image: ollama/ollama:latest
+    container_name: eco-sorter-ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
     ports:
       - "11434:11434"
     networks:
       - eco-network
-    dns:
-      - 8.8.8.8
-      - 1.1.1.1
     volumes:
       - ollama_data:/root/.ollama
       - ./services/llm-backend/entrypoint.sh:/entrypoint.sh
     entrypoint: ["/usr/bin/bash", "/entrypoint.sh"]
-
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 networks:
   eco-network:
     driver: bridge
