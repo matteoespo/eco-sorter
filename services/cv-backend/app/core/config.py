@@ -82,33 +82,37 @@ CLASS_THRESHOLDS: dict[str, float] = {
 # ── Eco-category lookup (class name → disposal category) ────────────
 # Built by inverting a category→classes mapping for O(1) lookups.
 _CATEGORY_TO_CLASSES: dict[str, list[str]] = {
-    "Recyclable": [
+    "Plastic & Metal": [
         "plastic bottle",
-        "glass bottle",
         "aluminum can",
-        "cardboard box",
-        "paper sheet",
+        "plastic bag",
         "plastic container",
-        "glass jar",
         "carton",
         "water bottle",
-        "cup or mug",
-        "plate or bowl",
-        "cutlery",
     ],
-    "Trash": [
-        "plastic bag",
+    "Paper & Cardboard": [
+        "cardboard box",
+        "paper sheet",
+        "book",
+    ],
+    "Glass": [
+        "glass bottle",
+        "glass jar",
+    ],
+    "Organic": [
+        "fruit or vegetable",
+        "food scraps",
+        "bread",
+    ],
+    "Residual Waste": [
         "napkin or tissue",
         "toy",
         "shoe",
         "clothing item",
-        "book",
         "bag",
-    ],
-    "Compost": [
-        "fruit or vegetable",
-        "food scraps",
-        "bread",
+        "cup or mug",
+        "plate or bowl",
+        "cutlery",
         "coffee cup",
     ],
     "Hazardous": [

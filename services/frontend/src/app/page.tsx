@@ -190,9 +190,11 @@ export default function EcoSorterDashboard() {
   const getCategoryColor = (category: string) => {
     if (!category) return "border-gray-500 text-gray-400";
     const lower = category.toLowerCase();
-    if (lower.includes("recycl")) return "border-emerald-500 text-emerald-400";
-    if (lower.includes("trash") || lower.includes("landfill")) return "border-red-500 text-red-400";
-    if (lower.includes("compost") || lower.includes("organic")) return "border-amber-500 text-amber-400";
+    if (lower.includes("plastic") || lower.includes("metal")) return "border-yellow-500 text-yellow-400";
+    if (lower.includes("paper") || lower.includes("cardboard")) return "border-blue-500 text-blue-400";
+    if (lower.includes("glass")) return "border-emerald-500 text-emerald-400";
+    if (lower.includes("organic") || lower.includes("compost")) return "border-amber-500 text-amber-400";
+    if (lower.includes("residual") || lower.includes("trash")) return "border-gray-400 text-gray-300";
     if (lower.includes("hazardous")) return "border-purple-500 text-purple-400";
     return "border-blue-500 text-blue-400";
   };
@@ -200,9 +202,11 @@ export default function EcoSorterDashboard() {
   const getCategoryBg = (category: string) => {
     if (!category) return "bg-gray-500/10";
     const lower = category.toLowerCase();
-    if (lower.includes("recycl")) return "bg-emerald-500/10";
-    if (lower.includes("trash") || lower.includes("landfill")) return "bg-red-500/10";
-    if (lower.includes("compost") || lower.includes("organic")) return "bg-amber-500/10";
+    if (lower.includes("plastic") || lower.includes("metal")) return "bg-yellow-500/10";
+    if (lower.includes("paper") || lower.includes("cardboard")) return "bg-blue-500/10";
+    if (lower.includes("glass")) return "bg-emerald-500/10";
+    if (lower.includes("organic") || lower.includes("compost")) return "bg-amber-500/10";
+    if (lower.includes("residual") || lower.includes("trash")) return "bg-gray-400/10";
     if (lower.includes("hazardous")) return "bg-purple-500/10";
     return "bg-blue-500/10";
   };

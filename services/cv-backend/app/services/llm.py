@@ -41,11 +41,11 @@ class LLMService:
             fails or the response cannot be parsed.
         """
         prompt = (
-            f'You are an eco-sorting assistant. Classify the item "{label}" '
+            f'You are an eco-sorting assistant following European recycling rules. Classify the item "{label}" '
             "and respond ONLY with valid JSON containing these exact keys:\n"
             '- "item": the item name\n'
-            '- "category": one of Recyclable, Trash, Compost, or Hazardous\n'
-            '- "action_required": a short instruction on how to dispose of it\n'
+            '- "category": one of "Plastic & Metal", "Paper & Cardboard", "Glass", "Organic", "Residual Waste", or "Hazardous"\n'
+            '- "action_required": a short instruction on how to dispose of it (e.g., "Put in the yellow plastic/metal container")\n'
             '- "fun_fact": a brief interesting fact about recycling this item\n'
             "Respond with JSON only, no extra text."
         )
