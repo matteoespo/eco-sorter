@@ -4,7 +4,7 @@
 
 <br />
 
-# 🌱 Eco-Sorter
+# Eco-Sorter
 
 **Real-time AI-powered waste sorting assistant using computer vision and local LLMs.**
 
@@ -27,7 +27,7 @@ Point your webcam at an object — Eco-Sorter identifies it, classifies it into 
 
 ---
 
-## ✨ Features
+## Features
 
 - 🎥 **Real-time webcam detection** — Streams at 5 FPS over WebSocket with live bounding box overlays
 - 🧠 **YOLO-World XL** — Open-vocabulary object detection with 31 eco-specific classes
@@ -37,7 +37,7 @@ Point your webcam at an object — Eco-Sorter identifies it, classifies it into 
 - ⚡ **Smart debounce** — Only queries the LLM after an object is stably detected for 1.5 seconds
 - 🐳 **One-command setup** — Fully containerised with Docker Compose
 
-## 🏗 Architecture
+## Architecture
 
 ```
 ┌──────────────┐        WebSocket (base64 frames)         ┌──────────────────┐
@@ -93,7 +93,7 @@ open http://localhost:3000
 > [!TIP]
 > No NVIDIA GPU? You can modify `docker-compose.yml` to remove the GPU reservation from `llm-backend` and use CPU-only inference (slower but functional).
 
-## ⚙️ Environment Variables
+## Environment Variables
 
 All configurable via `docker-compose.yml` → `cv-backend` → `environment`:
 
@@ -108,7 +108,7 @@ All configurable via `docker-compose.yml` → `cv-backend` → `environment`:
 | `DEBOUNCE_SECONDS` | `1.5` | Seconds to wait before querying the LLM |
 | `LOG_LEVEL` | `INFO` | Application log level |
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 eco-sorter/
@@ -145,7 +145,7 @@ eco-sorter/
 └── README.md
 ```
 
-## 🧪 Key Design Decisions
+## Key Design Decisions
 
 ### Class-Specific Confidence Thresholds
 
@@ -163,7 +163,7 @@ The LLM client uses `httpx.AsyncClient` instead of `requests`, preventing frame-
 
 The LLM is only queried after an object has been stably detected for a configurable period (default 1.5s), preventing excessive API calls during rapid scene changes.
 
-## 🛠 Tech Stack
+## Tech Stack
 
 <table>
   <tr>
@@ -200,26 +200,14 @@ The LLM is only queried after an object has been stably detected for a configura
   </tr>
 </table>
 
-## 🤝 Contributing
-
-Contributions are welcome! Please read the [Contributing Guide](CONTRIBUTING.md) before submitting a pull request.
-
-See also: [Code of Conduct](CODE_OF_CONDUCT.md) · [Security Policy](SECURITY.md)
-
-## 📄 License
+## License
 
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - [Ultralytics](https://ultralytics.com/) for the YOLO-World model and training infrastructure
 - [Ollama](https://ollama.ai/) for making local LLM inference dead simple
 - [Google DeepMind](https://deepmind.google/) for the Gemma model family
 
 ---
-
-<div align="center">
-
-Made with 💚 for a cleaner planet
-
-</div>
