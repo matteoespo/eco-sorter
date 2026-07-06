@@ -19,9 +19,7 @@ Point your webcam at an object — Eco-Sorter identifies it, classifies it into 
 
 [Getting Started](#-quick-start) •
 [Architecture](#-architecture) •
-[Configuration](#-environment-variables) •
-[Contributing](CONTRIBUTING.md) •
-[Changelog](CHANGELOG.md)
+[Configuration](#-environment-variables) 
 
 </div>
 
