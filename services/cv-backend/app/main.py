@@ -28,7 +28,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
     settings = get_settings()
 
-    # ── Startup ──────────────────────────────────────────────────────
+    # Startup
     logger = setup_logging(settings.LOG_LEVEL)
 
     logger.info("═" * 50)
@@ -57,20 +57,20 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
     yield
 
-    # ── Shutdown ─────────────────────────────────────────────────────
+    # Shutdown
     logger.info("Shutting down Eco-Sorter CV Backend …")
     await get_llm_service().close()
     logger.info("Shutdown complete")
 
 
-# ── Application instance ─────────────────────────────────────────────
+# Application instance
 app = FastAPI(
     title="Eco-Sorter CV Backend",
     version="2.0.0",
     lifespan=lifespan,
 )
 
-# ── CORS ─────────────────────────────────────────────────────────────
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -78,11 +78,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ── Routers ──────────────────────────────────────────────────────────
+# Routers
 app.include_router(api_router)
 
 
-# ── Health check ─────────────────────────────────────────────────────
+# Health check
 @app.get("/health")
 async def health_check() -> dict[str, str]:
     """Liveness probe for orchestration / load balancers."""

@@ -1,8 +1,6 @@
 #!/bin/bash
 
-# Start the Ollama server in the background
 /bin/ollama serve &
-# Wait for the server to be ready
 echo "Waiting for Ollama to start..."
 while ! ollama list > /dev/null 2>&1; do
   sleep 1

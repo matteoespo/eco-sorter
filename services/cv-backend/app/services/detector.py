@@ -52,7 +52,7 @@ class DetectorService:
             model_path = str(local_weights)
             logger.info("Loading YOLO weights from cached path: %s", model_path)
         else:
-            # Let ultralytics auto-download the model
+            # ultralytics auto-download the model
             model_path = settings.YOLO_MODEL_NAME
             logger.info(
                 "Cached weights not found at %s — downloading: %s",
@@ -138,7 +138,7 @@ class DetectorService:
         return detections
 
 
-# ── Module-level singleton ───────────────────────────────────────────
+# Module-level singleton
 _detector: DetectorService | None = None
 
 

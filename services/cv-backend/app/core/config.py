@@ -13,24 +13,24 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     """Application settings loaded from environment variables."""
 
-    # ── LLM Backend ──────────────────────────────────────────────────
+    # LLM Backend
     LLM_URL: str = "http://llm-backend:11434/api/generate"
     LLM_MODEL: str = "gemma:2b"
     LLM_TIMEOUT: float = 15.0
 
-    # ── YOLO Model ───────────────────────────────────────────────────
+    # YOLO Model
     YOLO_MODEL_NAME: str = "yolov8x-world.pt"
     YOLO_WEIGHTS_DIR: str = "/app/weights"
 
-    # ── Detection Tuning ─────────────────────────────────────────────
+    # Detection Tuning
     DEFAULT_CONFIDENCE: float = 0.20
     DEBOUNCE_SECONDS: float = 1.5
 
-    # ── Logging ──────────────────────────────────────────────────────
+    # Logging
     LOG_LEVEL: str = "INFO"
 
 
-# ── Optimised YOLO-World class vocabulary ────────────────────────────
+# Optimised YOLO-World class vocabulary
 ECO_CLASSES: list[str] = [
     "plastic bottle",
     "glass bottle",
@@ -65,7 +65,7 @@ ECO_CLASSES: list[str] = [
     "paint can",
 ]
 
-# ── Per-class confidence thresholds (override DEFAULT_CONFIDENCE) ────
+# Per-class confidence thresholds (override DEFAULT_CONFIDENCE)
 CLASS_THRESHOLDS: dict[str, float] = {
     "plastic bottle": 0.15,
     "aluminum can": 0.15,
@@ -79,7 +79,7 @@ CLASS_THRESHOLDS: dict[str, float] = {
     "clothing item": 0.25,
 }
 
-# ── Eco-category lookup (class name → disposal category) ────────────
+# Eco-category lookup (class name → disposal category)
 # Built by inverting a category→classes mapping for O(1) lookups.
 _CATEGORY_TO_CLASSES: dict[str, list[str]] = {
     "Plastic & Metal": [

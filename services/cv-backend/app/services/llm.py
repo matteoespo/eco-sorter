@@ -92,7 +92,7 @@ class LLMService:
         logger.info("LLM HTTP client closed")
 
 
-# ── Module-level singleton ───────────────────────────────────────────
+# Module-level singleton
 _llm_service: LLMService | None = None
 
 
